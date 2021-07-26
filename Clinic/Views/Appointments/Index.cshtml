@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Clinic.Models.Appointment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    body {
+        background-image: url("https://img.freepik.com/free-photo/blur-hospital_1203-7972.jpg?size=626&ext=jpg");
+        background-position: center;
+    }
+
+    tbody {
+        background-color: white;
+    }
+</style>
+
+<h1>Appointments</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Doctor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Patient)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Reservation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Doctor.DoctorName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patient.PatientName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Reservation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type.Type)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
