@@ -3,6 +3,12 @@
     ViewData["Title"] = "Home Page";
 }
 
+<style>
+    tbody {
+        background-color: HighlightText;
+    }
+</style>
+
 <div class="text-left">
     <h1 class="display-4">Welcome to Our Clinic</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
@@ -27,7 +33,7 @@ else
                     @Html.DisplayNameFor(model => model.Reservation)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.AppointmentTypeId)
+                    @Html.DisplayNameFor(model => model.Type)
                 </th>
                 <th></th>
             </tr>
@@ -46,7 +52,7 @@ else
                         @Html.DisplayFor(modelItem => item.Reservation)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.AppointmentTypeId)
+                        @Html.DisplayFor(modelItem => item.Type.Type)
                     </td>
                     <td>
                         <a asp-action="Edit" asp-controller="Appointments" asp-route-id="@item.Id">Edit</a> |
