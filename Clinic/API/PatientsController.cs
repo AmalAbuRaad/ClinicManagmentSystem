@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Clinic.Data;
 using Clinic.Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace Clinic.API
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowAllHeaders")]
     public class PatientsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

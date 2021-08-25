@@ -7,11 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Clinic.Data;
 using Clinic.Models;
+using Microsoft.AspNetCore.Cors;
+using System.Text.Json;
 
 namespace Clinic.API
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowAllHeaders")]
+    [Produces("application/json")]
     public class DoctorsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -78,6 +82,7 @@ namespace Clinic.API
         [HttpPost]
         public async Task<ActionResult<Doctor>> PostDoctor(Doctor doctor)
         {
+
             _context.Doctors.Add(doctor);
             await _context.SaveChangesAsync();
 

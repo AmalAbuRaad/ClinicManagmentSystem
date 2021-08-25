@@ -16,6 +16,7 @@ namespace Clinic
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,6 +28,15 @@ namespace Clinic
         public void ConfigureServices(IServiceCollection services)
         {
             var ConnString = Configuration.GetConnectionString("Default");
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllHeaders",
+                      builder =>
+                      {
+                          builder.AllowAnyOrigin()
+                                 .AllowAnyHeader().AllowAnyMethod();
+                      });
+            });
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnString));
             services.AddControllersWithViews();
             services.AddSwaggerGen(c =>
@@ -37,11 +47,31 @@ namespace Clinic
                     Version = "v1"
                 });
             });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.Use(async (context, next) =>
+            {
+
+                context.Response.OnStarting(() =>
+                {
+                    context.Response.Headers.Add("Allow", "GET, POST, PUT");
+                    return Task.FromResult(0);
+                });
+
+                await next();
+            }
+                      );
+
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
             if (env.IsDevelopment())
             {
                 app.UseSwagger();
@@ -55,11 +85,8 @@ namespace Clinic
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            app.UseStaticFiles();
 
-            app.UseRouting();
-
-            app.UseAuthorization();
+            app.UseCors("AllowAllHeaders");
 
             app.UseEndpoints(endpoints =>
             {
@@ -67,6 +94,7 @@ namespace Clinic
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+           
         }
     }
 }
